@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dojo Reads</title>
+    {%load static%} 
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <script src="{% static 'js/script.js' %}"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+      integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+      integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <header>
+      <h1 id="encabezado">Welcome {{request.session.alias }}</h1>
+      <div id="encabezadoDerecha">
+        <a class="encabezado" href="{% url 'add' %}">add books and reviews</a>
+        <a class="encabezado" href="{% url 'salir' %}">Logout</a>
+      </div>
+    </header>
+
+    <div id="left">
+      <h1>Recent books reviews:</h1>
+      <ul>
+        {% for resena in resenas %}{% if forloop.counter < 4 %}
+        <li><a href="{% url 'detalle' libroId=resena.comentario.id %}"> {{resena.comentario.titulo}}</a></li>
+        <ul>
+          <li>Rating {{resena.rating}}</li>
+          <a class="enlinea" href="{% url 'usuario' id=resena.comentadoPor.id %}">{{resena.comentadoPor.alias}} </a>
+          <li class="enlinea">: {{resena.resena}}</li>
+          <li>comentado el: {{resena.updated_at}}</li>
+        </ul>
+        {%endif%} {%endfor%}
+      </ul>
+    </div>
+    <div id="right">
+      <h2>other book with reviews</h2>
+      <div class="scroll1">
+        {% for libro in libros %}
+        <a href="{% url 'detalle' libroId=libro.id %}">{{libro.titulo}}</a><br />
+        {%endfor%}
+      </div>
+    </div>
+  </body>
+</html>

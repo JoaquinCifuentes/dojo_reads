@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dojo Reads</title>
+    {%load static%} 
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <script src="{% static 'js/script.js' %}"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+      integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+      integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <header>
+      <div id="encabezadoDerecha">
+        <a class="encabezado" href="{% url 'add' %}">add books and reviews</a>
+        <a class="encabezado" href="{% url 'salir' %}">Logout</a>
+      </div>
+    </header>
+    <h2>{{esteLibro.titulo}}</h2>
+    <h3>Autor: {{esteLibro.escritoPor.nombreAutor}}</h3>
+    <div id="detalleLeft">
+      <h3>Reviews:</h3>
+      {% for resena in resenas %}
+      <div class="comentario">
+        <p>Rating : {{resena.rating}}</p>
+        <a href="{% url 'usuario' id=resena.comentadoPor.id %}" class="enlinea">{{resena.comentadoPor.alias}}</a>
+        <p class="enlinea">comentó: {{resena.resena}}</p>
+        <p>{{resena.updated_at}}</p>
+      </div>
+      {%endfor%}
+    </div>
+    <div id="detalleRight">
+      <h3>add a reviews:</h3>
+      <form action="{% url 'addReview' libroId=esteLibro.id  %}" method="POST">
+        {%csrf_token%}
+        <textarea class="linea" name="resena" id="" cols="100" rows="4"></textarea>
+        <br />
+        <div id="alinear">
+          <h3 class="enlinea">rating</h3>
+          <select class="linea enlinea" name="rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <h3 class="enlinea">stars.</h3>
+          <button class="btn btn-secondary">Submit Review</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
