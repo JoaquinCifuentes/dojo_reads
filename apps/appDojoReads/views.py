@@ -8,15 +8,16 @@ def inicio(request):
     return render(request, "index.html")
 
 def registro(request):
-    print("$"*50)
+   
     if request.method == "GET":
         return redirect("/")
-    elif request.method =="POST":   
+    elif request.method =="POST": 
         error = Usuario.objects.basic_validator(request.POST)
-        if len(error) > 0:
+      
+        if len(error) > 3 or error["nombre"] != None or error["alias"] != None or error["password"] != None:
+           
             for key, value in error.items():
                 messages.error(request, value, key)
-               
             user= Usuario(
                 nombre = request.POST["nombre"],
                 alias =  request.POST["alias"],
@@ -25,8 +26,10 @@ def registro(request):
             context = {
                 "user": user
             }
+           
             return render(request, 'index.html', context)
         else:
+            
             contrasena= bcrypt.hashpw(request.POST["password"].encode(), bcrypt.gensalt()).decode()
             user = Usuario.objects.create(
                 nombre = request.POST["nombre"],
@@ -74,8 +77,12 @@ def books(request):
         return render(request,'books.html', context)
     return redirect("/")
 def add(request):
+
     if request.method=="GET":
-        return render(request, "add.html")
+        context={
+            "autores":Autor.objects.all()
+        }
+        return render(request, "add.html", context)
     elif request.method =="POST":
         
         #error = Usuario.objects.books_validator(request.POST)
@@ -110,19 +117,19 @@ def add(request):
 
 def detalle(request, libroId):
     error = Usuario.objects.review_validatron(request.POST)
+    esteLibro=Libros.objects.get(id=libroId)
+    context={
+        "esteLibro": esteLibro,
+        "resenas": Resena.objects.filter(comentario__id=libroId)
+       
+    }
     if len(error) > 0:
         for key, value in error.items():
             messages.error(request, value, key)
-        return render(request, 'add.html')
+        return render(request, 'detalle.html')
     else:
-        esteLibro=Libros.objects.get(id=libroId)
-        context={
-            "esteLibro": esteLibro,
-            "resenas": Resena.objects.filter(comentario__id=libroId)
-           
-        }
-        print(esteLibro.comentario)
-
+       
+        
         return render(request, "detalle.html", context)
 def addReview(request, libroId):
     esteLibro=Libros.objects.get(id=libroId)

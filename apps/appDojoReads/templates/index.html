@@ -31,10 +31,6 @@
   </head>
   <body>
     <h1>Welcome</h1>
-    {% for message in messages %} {% if "nombre" in message.tags%}
-    <th class="error">{{message}}</th>
-    {% endif %} {% endfor %}
-
     <div id="conteinerLeft">
       <h2 class="tituloTabla">Register</h2>
 
@@ -43,21 +39,30 @@
         <table class="table table-borderless">
           <tr>
             <th class="campoTabla">Nombre :</th>
-            <th><input type="text" name="nombre" placeholder="Nombre" /></th>
+            <th><input type="text" name="nombre" placeholder="Nombre" value="{{user.nombre}}" /></th>
+          </tr>
+          <tr>
+            <th></th>
             {% for message in messages %} {% if "nombre" in message.tags%}
             <th class="error">{{message}}</th>
             {% endif %} {% endfor %}
           </tr>
           <tr>
             <th class="campoTabla">Alias :</th>
-            <th><input type="text" name="alias" placeholder="alias" /></th>
+            <th><input type="text" name="alias" placeholder="alias" value="{{user.alias}}" /></th>
+          </tr>
+          <tr>
+            <th></th>
             {% for message in messages %} {% if "alias" in message.tags%}
             <th class="error">{{message}}</th>
             {% endif %} {% endfor %}
           </tr>
           <tr>
             <th class="campoTabla">Email :</th>
-            <th><input type="E-mail" name="email" placeholder="email" /></th>
+            <th><input type="E-mail" name="email" placeholder="email" value="{{user.email}}" /></th>
+          </tr>
+          <tr>
+            <th></th>
             {% for message in messages %} {% if "email" in message.tags%}
             <th class="error">{{message}}</th>
             {% endif %} {% endfor %}
@@ -65,6 +70,9 @@
           <tr>
             <th class="campoTabla">Password :</th>
             <th><input type="password" name="password" placeholder="password" /></th>
+          </tr>
+          <tr>
+            <th></th>
             {% for message in messages %} {% if "password" in message.tags%}
             <th class="error">{{message}}</th>
             {% endif %} {% endfor %}
@@ -75,6 +83,12 @@
           <tr>
             <th class="campoTabla">confirm password :</th>
             <th><input type="password" name="confirm" placeholder="confirm your password" /></th>
+          </tr>
+          <tr>
+            <th></th>
+            {% for message in messages %} {% if "confirm" in message.tags%}
+            <th class="error">{{message}}</th>
+            {% endif %} {% endfor %}
           </tr>
         </table>
         <button class="btn btn-secondary">Register</button>
@@ -90,8 +104,20 @@
             <th><input type="email" name="correoIngreso" placeholder="email" /></th>
           </tr>
           <tr>
+            <th></th>
+            {% for message in messages %} {% if "correoIngreso" in message.tags%}
+            <th class="error">{{message}}</th>
+            {% endif %} {% endfor %}
+          </tr>
+          <tr>
             <th class="campoTabla">Password</th>
             <th><input type="password" name="contrasena" placeholder="contrasena" /></th>
+          </tr>
+          <tr>
+            <th></th>
+            {% for message in messages %} {% if "contrasena" in message.tags%}
+            <th class="error">{{message}}</th>
+            {% endif %} {% endfor %}
           </tr>
         </table>
         <button class="btn btn-secondary">Login</button>

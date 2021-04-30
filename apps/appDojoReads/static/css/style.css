@@ -80,3 +80,7 @@ input {
 #datosUser {
   padding-left: 20px;
 }
+.error {
+  color: red;
+  font-size: 12px;
+}

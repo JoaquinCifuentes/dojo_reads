@@ -7,21 +7,16 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 class UsuariosManager(models.Manager):
     def basic_validator(self, postData):
         error={}
-        if postData["nombre"].isalpha():
-            if len(postData["nombre"])<2:
-                error["nombre"]= "el nombre debe tener un largo minimo de 2 caracteres"
-        else:
-            error["nombre"]= "el nombre debe tener solo letras"
-        if len(postData["alias"])<2:
-            error["alias"]= "el apellido debe tener un largo minimo de 2 caracteres"
+        error["nombre"] = self.validar_longitud("nombre", postData["nombre"], 2)
+        error["alias"] = self.validar_longitud("alias", postData["alias"], 5)
+        error["password"] = self.validar_longitud("password", postData["password"], 2)
+        
         if len(self.filter(email=postData["email"])) > 0:
             error["email"]="el email ya existe, por favor intenta logearte"
         if not EMAIL_REGEX.match(postData["email"]):
             error["email"]="el mail no tiene un formato valido"
-        if len(postData["password"])<1:
-            error["password"]= "la contraseña debe tener almenos 4 caracteres"    
         if postData["password"] != postData["confirm"]:
-            error["password"]= "las contraseñas deben ser iguales"
+            error["confirm"]= "las contraseñas deben ser iguales"
         return error
 
     def login_validator(self, datos):
@@ -41,12 +36,11 @@ class UsuariosManager(models.Manager):
 
     def books_validator(self, datos):
         error={}
-        if len(datos["titulo"])<1:
-            error["titulo"]="es requisito incorporar un titulo"
+        error["titulo"] = self.validar_longitud("titulo", datos["titulo"], 2)
+        error["resena"] = self.validar_longitud("resena", datos["resena"], 10)
+        
         if len(Book.objects.filter(titulo=datos["titulo"])) > 0:
-            error["titulo"]="el libro ya existe,no wei"
-        if len(datos["resena"])<5:
-            error["resena"]= "por favor ingresar mas de 5 caracteres"
+            error["titulo"]="el libro ya existe en nuestra base de datos,siga participando"
         return error
     
     def review_validatron(self, datos):
@@ -54,6 +48,14 @@ class UsuariosManager(models.Manager):
         #if len(datos["resena"])<10:
         #    error["resena"]="la reseña debe tener 10 caracteres como minimo"
         return error
+
+    def validar_longitud(self, campo, cadena, largoMinimo):
+        error ={}
+        if len(cadena)< largoMinimo:
+            return (f"{campo} no puede ser menor que {largoMinimo} caracteres.")
+        
+
+    
 
 
 class Usuario(models.Model):
